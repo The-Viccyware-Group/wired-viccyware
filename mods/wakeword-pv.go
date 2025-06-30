@@ -34,7 +34,7 @@ const (
 	CodeUnknown
 )
 
-var WakeWordPVLocation = "/data/data/com.anki.victor/persistent/picovoice/custom.ppn"
+var WakeWordPVLocation = "/data/data/com.anki.victor/persistent/picovoice/custom_1-5-0.ppn"
 
 type WakeWordPV struct {
 	vars.Modification
