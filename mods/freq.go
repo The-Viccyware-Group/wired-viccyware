@@ -7,7 +7,7 @@ import (
 	"path/filepath"
 	"strconv"
 
-	"github.com/os-vector/wired/vars"
+	"github.com/The-Viccyware-Group/wired-viccyware/vars"
 )
 
 var FreqPreset int = 1

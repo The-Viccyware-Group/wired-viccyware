@@ -1,4 +1,4 @@
-module github.com/os-vector/wired
+module github.com/The-Viccyware-Group/wired-viccyware
 
 go 1.19
 

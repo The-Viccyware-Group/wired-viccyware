@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/os-vector/wired/vars"
+	"github.com/The-Viccyware-Group/wired-viccyware/vars"
 )
 
 var SensitivityPVLocation = "/data/data/com.anki.victor/persistent/picovoice/sensitivity2"

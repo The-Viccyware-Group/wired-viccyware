@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/os-vector/wired/mods"
-	"github.com/os-vector/wired/vars"
+	"github.com/The-Viccyware-Group/wired-viccyware/mods"
+	"github.com/The-Viccyware-Group/wired-viccyware/vars"
 )
 
 var EnabledMods []vars.Modification = []vars.Modification{
@@ -14,6 +14,7 @@ var EnabledMods []vars.Modification = []vars.Modification{
 	mods.NewAutoUpdate(),
 	mods.NewSensitivityPV(),
 	mods.NewJdocSettings(),
+	mods.NewVolumeControl(),
 }
 
 func main() {

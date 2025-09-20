@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/os-vector/wired/vars"
+	"github.com/The-Viccyware-Group/wired-viccyware/vars"
 )
 
 type AutoUpdate struct {

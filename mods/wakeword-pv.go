@@ -9,7 +9,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/os-vector/wired/vars"
+	"github.com/The-Viccyware-Group/wired-viccyware/vars"
 )
 
 type WakeWordPVRequest struct {

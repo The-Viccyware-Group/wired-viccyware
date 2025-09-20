@@ -10,7 +10,7 @@ import (
 	"net/http"
 
 	"github.com/digital-dream-labs/vector-go-sdk/pkg/vectorpb"
-	"github.com/os-vector/wired/vars"
+	"github.com/The-Viccyware-Group/wired-viccyware/vars"
 )
 
 var ctx context.Context
