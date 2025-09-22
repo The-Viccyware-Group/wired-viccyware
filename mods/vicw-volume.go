@@ -66,7 +66,7 @@ func (m *VolumeControl) HTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 func isValidVolume(level string) bool {
-	validLevels := []string{"MUTE", "LOW", "MEDIUM", "MEDIUM_HIGH", "HIGH"}
+	validLevels := []string{"MUTE", "LOW", "MEDIUM_LOW", "MEDIUM", "MEDIUM_HIGH", "HIGH"}
 	for _, valid := range validLevels {
 		if level == valid {
 			return true
