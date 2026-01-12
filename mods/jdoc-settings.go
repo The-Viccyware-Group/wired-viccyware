@@ -6,7 +6,9 @@ import (
 	"crypto/tls"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"net/http"
+	"strings"
 
 	"github.com/digital-dream-labs/vector-go-sdk/pkg/vectorpb"
 	"github.com/os-vector/wired/vars"
@@ -36,21 +38,38 @@ func (modu *JdocSettings) Load() error {
 }
 
 func (m *JdocSettings) HTTP(w http.ResponseWriter, r *http.Request) {
-	if r.URL.Path == "/api/mods/JdocSettings/setLocation" {
+	if !strings.HasPrefix(r.URL.Path, "/api/mods/JdocSettings/") {
+		return
+	}
+	switch strings.TrimPrefix(r.URL.Path, "/api/mods/JdocSettings/") {
+	case "setLocation":
 		location := r.FormValue("location")
 		err := setLocation(location)
 		if err != nil {
 			vars.HTTPError(w, r, err.Error())
 			return
 		}
-	} else if r.URL.Path == "/api/mods/JdocSettings/setTimezone" {
+	case "setTimezone":
 		timezone := r.FormValue("timezone")
 		err := setTimezone(timezone)
 		if err != nil {
 			vars.HTTPError(w, r, err.Error())
 			return
 		}
-	} else if r.URL.Path == "/api/mods/JdocSettings/getLocation" {
+	case "setFahrenheit":
+		temp := r.FormValue("temp")
+		var gib bool
+		if temp == "f" {
+			gib = true
+		} else {
+			gib = false
+		}
+		err := setFahrenheit(gib)
+		if err != nil {
+			vars.HTTPError(w, r, err.Error())
+			return
+		}
+	case "getLocation":
 		location, err := getLocation()
 		if err != nil {
 			vars.HTTPError(w, r, err.Error())
@@ -58,7 +77,7 @@ func (m *JdocSettings) HTTP(w http.ResponseWriter, r *http.Request) {
 		}
 		w.Write([]byte(location))
 		return
-	} else if r.URL.Path == "/api/mods/JdocSettings/getTimezone" {
+	case "getTimezone":
 		timezone, err := getTimezone()
 		if err != nil {
 			vars.HTTPError(w, r, err.Error())
@@ -66,7 +85,19 @@ func (m *JdocSettings) HTTP(w http.ResponseWriter, r *http.Request) {
 		}
 		w.Write([]byte(timezone))
 		return
-	} else {
+	case "getFahrenheit":
+		temp, err := getFahrenheit()
+		if err != nil {
+			vars.HTTPError(w, r, err.Error())
+			return
+		}
+		var ret string = "c"
+		if temp {
+			ret = "f"
+		}
+		w.Write([]byte(ret))
+		return
+	default:
 		vars.HTTPError(w, r, "404 not found")
 	}
 	vars.HTTPSuccess(w, r)
@@ -84,6 +115,11 @@ func setTimezone(timezone string) error {
 		return errors.New("empty time zone")
 	}
 	return setSettingSDKstring("time_zone", timezone)
+}
+
+func setFahrenheit(isF bool) error {
+	setSettingSDKintbool("temp_is_fahrenheit", fmt.Sprint(isF))
+	return nil
 }
 
 func getLocation() (string, error) {
@@ -128,6 +164,27 @@ func getTimezone() (string, error) {
 	return decodedDoc.TimeZone, nil
 }
 
+func getFahrenheit() (bool, error) {
+	v, err := vars.GetVec()
+	if err != nil {
+		return false, err
+	}
+	r, err := v.Conn.PullJdocs(ctx,
+		&vectorpb.PullJdocsRequest{
+			JdocTypes: []vectorpb.JdocType{
+				vectorpb.JdocType_ROBOT_SETTINGS,
+			},
+		},
+	)
+	if err != nil {
+		return false, err
+	}
+	doc := r.NamedJdocs[0].Doc.JsonDoc
+	var decodedDoc robotSettingsJson
+	json.Unmarshal([]byte(doc), &decodedDoc)
+	return decodedDoc.TempIsFahrenheit, nil
+}
+
 var transCfg = &http.Transport{
 	TLSClientConfig: &tls.Config{InsecureSkipVerify: true}, // ignore SSL warnings
 }
@@ -147,6 +204,25 @@ func setSettingSDKstring(setting string, value string) error {
 	if err != nil {
 		panic(err)
 	}
+	return nil
+}
+
+func setSettingSDKintbool(setting string, value string) error {
+	url := "https://localhost:443/v1/update_settings"
+	var updateJSON = []byte(`{"update_settings": true, "settings": {"` + setting + `": ` + value + ` } }`)
+	req, _ := http.NewRequest("POST", url, bytes.NewBuffer(updateJSON))
+	guid, err := vars.GetGUID()
+	if err != nil {
+		return err
+	}
+	req.Header.Set("Authorization", "Bearer "+guid)
+	req.Header.Set("Content-Type", "application/json")
+	client := &http.Client{Transport: transCfg}
+	resp, err := client.Do(req)
+	if err != nil {
+		panic(err)
+	}
+	defer resp.Body.Close()
 	return nil
 }
 
