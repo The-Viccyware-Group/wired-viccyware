@@ -46,10 +46,13 @@ func (m *AutoUpdate) HTTP(w http.ResponseWriter, r *http.Request) {
 	} else if r.URL.Path == "/api/mods/AutoUpdate/setInhibited" {
 		os.WriteFile("/data/data/user-do-not-auto-update", []byte("true"), 0777)
 		vars.HTTPSuccess(w, r)
+		return
 	} else if r.URL.Path == "/api/mods/AutoUpdate/setAllowed" {
 		os.Remove("/data/data/user-do-not-auto-update")
 		vars.HTTPSuccess(w, r)
+		return
 	} else {
 		vars.HTTPError(w, r, "404 not found")
+		return
 	}
 }

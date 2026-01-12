@@ -1,0 +1,195 @@
+body {
+    background-color: #000;
+    color: #f0f0f0;
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+}
+
+.tabs {
+    display: flex;
+    width: 80%;
+    max-width: 900px;
+    border-radius: 7px;
+    margin: 20px auto 5px;
+    background: #1e1e1e;
+    overflow: hidden;
+}
+
+.tabs button {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    background: #1e1e1e;
+    color: #f0f0f0;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.tabs button.active {
+    background: #a855f7;
+    color: #1e1e1e;
+}
+
+header,
+.container {
+    text-align: center;
+    padding: 10px;
+    margin-bottom: 10px;
+    margin-top: 20px;
+}
+
+.container {
+    width: 80%;
+    border-radius: 7px;
+    max-width: 600px;
+    background-color: #1e1e1e;
+}
+
+header h1 {
+    margin: 0;
+}
+
+h2 {
+    margin-top: 10px;
+    color: #a855f7;
+}
+
+p {
+    margin: 0 0 10px;
+}
+
+form {
+    margin-bottom: 10px;
+}
+
+input[type="radio"],
+input[type="checkbox"] {
+    display: none;
+}
+
+.smallhr {
+    width: 200px;
+    height: 2px;
+    border: none;
+    background-color: #444;
+    color: #444;
+
+}
+
+.buttonlabel {
+    display: inline-block;
+    padding: 10px;
+    border: 2px solid #444;
+    border-radius: 5px;
+    margin: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+input[type="radio"]:checked+label,
+input[type="checkbox"]:checked+label {
+    background-color: #a855f7;
+    border-color: #9d4edd;
+    color: #1e1e1e;
+}
+
+label:hover {
+    background-color: #444;
+}
+
+button {
+    background-color: #a855f7;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin: 5px;
+}
+
+button:hover {
+    background-color: #9d4edd;
+}
+
+.mod-section {
+    margin-bottom: 10px;
+}
+
+.button-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+input[type="range"],
+input[type="number"],
+input[type="text"] {
+    padding: 4px;
+    border-radius: 4px;
+    border: 1px solid #555;
+    background: #1e1e1e;
+    color: #f0f0f0;
+    margin: 2px;
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* faces mod */
+
+.faces-status {
+    margin: 8px 0;
+}
+
+.faces-status.error {
+    color: #ff6b6b;
+}
+
+.faces-status.ok {
+    color: #f0f0f0;
+}
+
+.faces-list {
+    margin-top: 6px;
+}
+
+.face-card {
+    background: #2a2a2a;
+    border: 1px solid #444;
+    border-radius: 8px;
+    padding: 10px;
+    margin: 8px 0;
+    text-align: left;
+}
+
+.face-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.face-meta {
+    font-size: 12px;
+    opacity: 0.8;
+}
+
+.face-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}

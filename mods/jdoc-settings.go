@@ -8,6 +8,7 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"strings"
 
 	"github.com/digital-dream-labs/vector-go-sdk/pkg/vectorpb"
 	"github.com/The-Viccyware-Group/wired-viccyware/vars"
@@ -37,21 +38,25 @@ func (modu *JdocSettings) Load() error {
 }
 
 func (m *JdocSettings) HTTP(w http.ResponseWriter, r *http.Request) {
-	if r.URL.Path == "/api/mods/JdocSettings/setLocation" {
+	if !strings.HasPrefix(r.URL.Path, "/api/mods/JdocSettings/") {
+		return
+	}
+	switch strings.TrimPrefix(r.URL.Path, "/api/mods/JdocSettings/") {
+	case "setLocation":
 		location := r.FormValue("location")
 		err := setLocation(location)
 		if err != nil {
 			vars.HTTPError(w, r, err.Error())
 			return
 		}
-	} else if r.URL.Path == "/api/mods/JdocSettings/setTimezone" {
+	case "setTimezone":
 		timezone := r.FormValue("timezone")
 		err := setTimezone(timezone)
 		if err != nil {
 			vars.HTTPError(w, r, err.Error())
 			return
 		}
-	} else if r.URL.Path == "/api/mods/JdocSettings/setFahrenheit" {
+	case "setFahrenheit":
 		temp := r.FormValue("temp")
 		var gib bool
 		if temp == "f" {
@@ -64,7 +69,7 @@ func (m *JdocSettings) HTTP(w http.ResponseWriter, r *http.Request) {
 			vars.HTTPError(w, r, err.Error())
 			return
 		}
-	} else if r.URL.Path == "/api/mods/JdocSettings/getLocation" {
+	case "getLocation":
 		location, err := getLocation()
 		if err != nil {
 			vars.HTTPError(w, r, err.Error())
@@ -72,7 +77,7 @@ func (m *JdocSettings) HTTP(w http.ResponseWriter, r *http.Request) {
 		}
 		w.Write([]byte(location))
 		return
-	} else if r.URL.Path == "/api/mods/JdocSettings/getTimezone" {
+	case "getTimezone":
 		timezone, err := getTimezone()
 		if err != nil {
 			vars.HTTPError(w, r, err.Error())
@@ -80,7 +85,7 @@ func (m *JdocSettings) HTTP(w http.ResponseWriter, r *http.Request) {
 		}
 		w.Write([]byte(timezone))
 		return
-	} else if r.URL.Path == "/api/mods/JdocSettings/getFahrenheit" {
+	case "getFahrenheit":
 		temp, err := getFahrenheit()
 		if err != nil {
 			vars.HTTPError(w, r, err.Error())
@@ -92,7 +97,7 @@ func (m *JdocSettings) HTTP(w http.ResponseWriter, r *http.Request) {
 		}
 		w.Write([]byte(ret))
 		return
-	} else {
+	default:
 		vars.HTTPError(w, r, "404 not found")
 	}
 	vars.HTTPSuccess(w, r)

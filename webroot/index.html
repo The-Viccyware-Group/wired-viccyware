@@ -5,147 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mods</title>
-    <style>
-        body {
-            background-color: #1e1e1e;
-            color: #f0f0f0;
-            font-family: Arial, sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin: 0;
-            padding: 0;
-        }
-
-        .tabs {
-            display: flex;
-            width: 80%;
-            max-width: 700px;
-            margin: 20px auto 5px;
-            background: #333;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
-            border-radius: 10px 10px 10px 10px;
-            overflow: hidden;
-        }
-
-        .tabs button {
-            flex: 1;
-            padding: 10px;
-            border: none;
-            background: #333;
-            color: #f0f0f0;
-            font-size: 16px;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-
-        .tabs button.active {
-            background: #a855f7;
-            color: #1e1e1e;
-        }
-
-        header,
-        .container {
-            text-align: center;
-            padding: 10px;
-            width: 80%;
-            max-width: 600px;
-            background-color: #333;
-            border-radius: 10px;
-            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.5);
-            margin-bottom: 10px;
-            margin-top: 20px;
-        }
-
-        header h1 {
-            margin: 0;
-        }
-
-        h2 {
-            margin-top: 10px;
-            color: #a855f7;
-        }
-
-        p {
-            margin: 0 0 10px;
-        }
-
-        form {
-            margin-bottom: 10px;
-        }
-
-        input[type="radio"],
-        input[type="checkbox"] {
-            display: none;
-        }
-
-        label {
-            display: inline-block;
-            padding: 10px;
-            border: 2px solid #444;
-            border-radius: 5px;
-            margin: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s, border-color 0.3s;
-        }
-
-        input[type="radio"]:checked+label,
-        input[type="checkbox"]:checked+label {
-            background-color: #a855f7;
-            border-color: #9d4edd;
-            color: #1e1e1e;
-        }
-
-        label:hover {
-            background-color: #444;
-        }
-
-        button {
-            background-color: #a855f7;
-            border: none;
-            border-radius: 5px;
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            margin: 5px;
-        }
-
-        button:hover {
-            background-color: #9d4edd;
-        }
-
-        .mod-section {
-            margin-bottom: 10px;
-        }
-
-        .button-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 10px;
-        }
-
-        input[type="range"],
-        input[type="number"],
-        input[type="text"] {
-            padding: 4px;
-            border-radius: 4px;
-            border: 1px solid #555;
-            background: #1e1e1e;
-            color: #f0f0f0;
-            margin: 2px;
-        }
-
-        .tab-content {
-            display: none;
-        }
-
-        .tab-content.active {
-            display: block;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
@@ -159,11 +19,13 @@
         <button data-target="#aud">Auto Updates</button>
         <button data-target="#sensitivity">Wakeword Sensitivity</button>
         <button data-target="#jdocsettings">User Preferences</button>
+        <button data-target="#faces">Face Manager</button>
     </div>
 
     <div id="home" class="container tab-content active">
         <h2><code>wired</code></h2>
         <p>This is where extra configuration options exist.</p>
+        <p>Click the tabs to navigate the options.</p>
     </div>
 
     <div id="mainmods" class="container mod-section tab-content">
@@ -173,11 +35,11 @@
             <p>Brings better SDK performance, but may cause overheating.</p>
             <form>
                 <input type="radio" id="regular" name="frequency" value="0" onchange="FreqChange_Submit()">
-                <label for="regular">Regular</label>
+                <label class="buttonlabel" for="regular">Regular</label>
                 <input type="radio" id="balanced" name="frequency" value="1" onchange="FreqChange_Submit()">
-                <label for="balanced">Balanced</label>
+                <label class="buttonlabel" for="balanced">Balanced</label>
                 <input type="radio" id="performance" name="frequency" value="2" onchange="FreqChange_Submit()">
-                <label for="performance">Performance</label>
+                <label class="buttonlabel" for="performance">Performance</label>
             </form>
         </div>
     </div>
@@ -185,6 +47,7 @@
     <div id="cww" class="container mod-section tab-content">
         <h2>Custom Wake Word</h2>
         <p>At least two syllables, at least 5 letters.</p>
+        <hr class="smallhr">
         <div id="wakeWordStatus"></div>
         <div class="button-container">
             <label id="keywordLabel" for="keyword">Desired wake word:</label>
@@ -217,11 +80,12 @@
 
     <div id="jdocsettings" class="container mod-section tab-content">
         <h2>User Preferences</h2>
+        <div id="jdocStatus"></div>
         <div class="button-container">
-            <div id="jdocStatus"></div>
             <label id="locationLabel" for="location">Location:</label>
             <input type="text" placeholder="San Francisco, California" id="location">
             <button id="locationSet" onclick="setLocation()">Set Location</button>
+            <hr class="smallhr">
             <label id="timezoneLabel" for="timezone">Time Zone:</label>
             <select name="timezone" id="timezone">
                 <option value="Pacific/Honolulu">Pacific/Honolulu</option>
@@ -268,6 +132,7 @@
                 <option value="Australia/Auckland">Australia/Auckland</option>
             </select>
             <button id="timezoneSet" onclick="setTimezone()">Set Timezone</button>
+            <hr class="smallhr">
             <label id="tempLabel" for="tUnits">Temp Units:</label>
             <select name="tUnits" id="tUnits">
                 <option value="f">Fahrenheit</option>
@@ -277,6 +142,34 @@
         </div>
     </div>
 
+    <div id="faces" class="container mod-section tab-content">
+        <h2>Face Manager</h2>
+        <p>Manage enrolled faces: list, rename, delete, or enroll a new one.</p>
+        <hr class="smallhr">
+
+        <div id="facesStatus" class="faces-status" style="display:none;"></div>
+
+        <div style="margin-top: 10px;">
+            <h3 style="margin: 8px 0; color: #a855f7;">Enroll new face</h3>
+            <div class="button-container" style="gap: 6px;">
+                <label for="faceNewName">Name:</label>
+                <input type="text" id="faceNewName" placeholder="Jeff">
+                <button type="button" onclick="faceTrain()">Start Enroll</button>
+            </div>
+        </div>
+        <hr class="smallhr">
+
+
+        <div style="margin-top: 12px;">
+            <h3 style="margin: 8px 0; color: #a855f7;">Currently enrolled faces:</h3>
+            <div class="button-container" style="gap: 6px;">
+                <button type="button" id="facesRefreshBtn" onclick="facesRefresh()">Refresh</button>
+            </div>
+            <div id="facesList" class="faces-list"></div>
+        </div>
+    </div>
+
+
     <div id="showDuringVicRestart" class="container" style="display: none;">
         <h1>Cozmo is restarting, please wait...</h1>
     </div>
@@ -284,7 +177,14 @@
         <h2>A Cozmo restart is required for changes to take affect.</h2>
         <input type="button" value="Restart" id="restartButton" onclick="RestartVic()">
     </div>
-    <script src="js/mods.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/freq.js"></script>
+    <script src="js/wakeword-pv.js"></script>
+    <script src="js/auto-update.js"></script>
+    <script src="js/sensitivity-pv.js"></script>
+    <script src="js/jdoc-settings.js"></script>
+    <script src="js/volume.js"></script>
+    <script src="js/faces.js"></script>
 </body>
 
 </html>
