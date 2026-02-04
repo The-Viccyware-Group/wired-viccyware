@@ -68,14 +68,6 @@ func getEyeColor() (eyeColorResponse, error) {
 	return resp, nil
 }
 
-func getVolume() (int, error) {
-	doc, err := getJdoc()
-	if err != nil {
-		return 0, err
-	}
-	return doc.MasterVolume, nil
-}
-
 func getJdoc() (robotSettingsJson, error) {
 	v, err := vars.GetVec()
 	if err != nil {
